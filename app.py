@@ -1,14 +1,94 @@
-from os import error
+from dotenv import load_dotenv
+load_dotenv()
+
+from os import abort, error
 from models import db, User, app
-from flask import request, redirect, url_for, render_template, session
+from flask import request, redirect, url_for, render_template, session, abort
 import datetime
 import os
+from flask_mail import Mail, Message
+import jwt
 
 app.secret_key = b'#ZRfeuPY^+f]1P|'
+
+sender_mail = os.getenv('MAIL_USERNAME')
+forgot_password_secret = os.getenv('forgot_password_secret')
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = sender_mail
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
+
+
+@app.post("/sendForgotEmail")
+def email():
+    email = request.json.get("email")
+    if email is None:
+        abort(400)
+
+    user = User.query.filter(User.email == email).first()
+    if user is None:
+        abort(404)
+
+    encoded_jwt = jwt.encode({"user_id": user.id},
+                             forgot_password_secret, algorithm="HS256")
+
+    print(encoded_jwt, request.host_url, request.host)
+
+    msg = Message('Reset password',
+                  sender=sender_mail, recipients=[email])
+    msg.body = f"""
+        Hey {user.first_name},
+        Here is a link to reset your password
+
+        {request.host_url}resetpassword/{encoded_jwt}
+    """
+    # print(msg.body)
+    mail.send(msg)
+    return "Message sent!"
+
+
+@app.get("/resetpassword/<token>")
+def resetPassword(token):
+
+    newPassword = request.args.get('new-password')
+
+    try:
+        user_id = jwt.decode(token, forgot_password_secret,
+                             algorithms=["HS256"])['user_id']
+        print(user_id)
+    except Exception as e:
+        print(str(e))
+        return "invalid link"
+
+    try:
+        user = User.query.get(user_id)
+        if user is None:
+            raise "error"
+    except Exception as e:
+        print(str(e))
+        return "could find the user"
+
+    if newPassword is None:
+        return render_template("Forgot_password.html")
+
+    try:
+        user.password = newPassword
+        db.session.commit()
+    except Exception as e:
+        print(str(e))
+
+    return redirect(url_for("signin", msg="password reset successfully!"))
+
 
 @app.route("/")
 def index():
     return redirect("/signup")
+
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
@@ -67,7 +147,8 @@ def signin():
         if None in [email, password]:
             return redirect(url_for('signin', msg="fields missing"))
 
-        user = User.query.filter(User.email == email, User.password == password).first()
+        user = User.query.filter(
+            User.email == email, User.password == password).first()
 
         if user is None:
             return redirect(url_for('signin', msg="Invalid credentials"))
@@ -79,4 +160,4 @@ def signin():
 
 
 if __name__ == "__main__":
-    app.run(port=os.getenv("PORT",5000))
+    app.run(debug=True, port=os.getenv("PORT", 5000))

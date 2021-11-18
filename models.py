@@ -1,9 +1,10 @@
 from enum import unique
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import os
 
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://puuwbudoimhane:ff2b9248fb02a7500c039189ce92a859ee5f474d4afb3d0364e427d0a08ac464@ec2-34-237-46-61.compute-1.amazonaws.com:5432/d60872u5562qh3"
+app = Flask("heart")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 

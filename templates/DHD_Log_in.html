@@ -20,6 +20,11 @@
 
 <body style="background-image: url('/static/img/background.jpg');">
 
+  <div id="loading-screen"
+    style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fffa; display: none; justify-content: center; align-items: center; z-index: 999; width: 100%; height: 100%;">
+    <span>loading...</span>
+  </div>
+
   <section class="all">
     <div id="img"></div>
     <img src="/static/img/Logo.png" alt="user">
@@ -31,7 +36,7 @@
 
 
     <form action="/signin" method="POST" class="input">
-      <input required name="email" type="text" placeholder="Email address" class="fir_block">
+      <input required id="email" name="email" type="email" placeholder="Email address" class="fir_block">
       <br>
       <input required name="password" type="password" placeholder="Password" class="sec_block">
 
@@ -45,7 +50,37 @@
 
           </div>
 
-          <a href="#" class="inside">Forgot password?</a>
+          <script>
+            const forgot = async() => {
+              if (!document.getElementById('email').checkValidity()) {
+                alert("please enter the email first")
+                return
+              }
+              email = document.getElementById('email').value
+
+              document.getElementById("loading-screen").style.display = "flex";
+              await fetch("/sendForgotEmail", {
+                method: "POST",
+                headers: {
+                  "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                  email: email
+                })
+              })
+                .then((res) => {
+                  if (res.ok)
+                    alert("an email as been send to " + email)
+                  else
+                    alert("an error happened")
+                })
+                .catch(() => { alert("an error happened") })
+              document.getElementById("loading-screen").style.display = "none";
+
+            }
+          </script>
+
+          <span onclick="forgot()" style="cursor:pointer;" class="inside">Forgot password?</span>
 
         </div>
       </section>
@@ -59,7 +94,6 @@
           Do not have an account? <a href="/signup" class="up">Sign up</a>
 
         </div>
-
 
       </section>
     </form>
