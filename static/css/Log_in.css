@@ -1,0 +1,148 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 0%;
+    background-attachment: fixed;
+}
+.all{
+    background-color: white;
+    text-align: center;
+    border-radius: 70px;
+    border: 3px solid  #09D0E3;
+    width: 500px;
+    height: 600px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+img {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    top: 15px;
+    left: 10px;
+
+}
+#img {
+    position: absolute;
+    top: 7px;
+    left: 5px;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 3px solid #09D0E3;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: #1477C8;
+    animation-name: spin;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.hero{
+    font-family: 'Lobster', sans-serif;
+    text-align: center;
+    margin: 50px 0 10px 0;
+    color: #1477C8;
+    font-size: 50px;
+}
+span{
+    color: #09D0E3;
+}
+
+.fir_block, .sec_block{
+    color: #1477C8;
+    font-family:'Roboto', sans-serif ;
+    margin-top: 1.5em;
+    border-radius: 5em;
+    border: solid whitesmoke;
+    font-weight: bold;
+    box-shadow: 10px 10px 8px #d3d2d2;
+    width: 28.5em;
+    padding-top: 10px;
+    padding-right: 2em;
+    padding-bottom: 10px;
+    padding-left: 2em;
+}
+.input{
+    position: absolute;
+    top: 33%;
+    left: 6%;
+}
+.re{
+    font-weight: bold;
+    
+    position: relative;
+    right: 9em;
+}
+
+.inside{
+    text-decoration: none;
+    font-weight: bold;
+    color: rgb(13, 173, 236);
+    margin-top: 1em;
+    
+    position: relative;
+    bottom: 1em;
+    left: 9em;
+}
+.LastOne {
+    font-family: 'Lobster', sans-serif;
+    position: absolute;
+    bottom: -55px;
+    left: 140px;
+    font-weight: bold;
+    font-size: 1em;
+    border-radius:2em;
+    padding-left: 4em;
+    padding-right: 4em;
+    padding-top: .8em;
+    padding-bottom: .8em;
+    color: white;
+    background: linear-gradient(to bottom, #09D0E3, #1477C8);
+    border: whitesmoke;
+    box-shadow: 10px 10px 8px #d3d2d2 ;
+    transition: 0.5s;
+}
+.LastOne:hover {
+    background: linear-gradient(to bottom, #1477C8, #09D0E3);
+}
+
+.sign{
+    font-weight: bold;
+    position: absolute;
+    bottom: -6em;
+    left: 25%;
+
+}
+.up{
+    text-decoration: none;
+    color:rgb(13, 173, 236) ;
+}
+.submission{
+    position: relative;
+    top: 2em;
+}
+#log {
+    color: #fff;
+    text-decoration: none;
+}
+.fir_block:focus,  .sec_block:focus {
+    outline: 2px solid #1477C8;
+}
+.right{
+    position: relative;
+    top: 2em;
+}

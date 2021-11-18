@@ -1,0 +1,198 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 0%;
+    background-attachment: fixed;
+}
+form{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 600px;
+    background-color: #fff;
+    border: 3px solid #09D0E3;
+    border-radius: 70px;
+}
+img {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    top: 15px;
+    left: 10px;
+
+}
+#img {
+    position: absolute;
+    top: 7px;
+    left: 5px;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 3px solid #09D0E3;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: #1477C8;
+    animation-name: spin;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+h2 {
+    font-family: 'Lobster', sans-serif;
+    text-align: center;
+    margin: 50px 0 10px 0;
+    color: #1477C8;
+    font-size: 50px;
+}
+span {
+    color: #09D0E3;
+}
+.box {
+    position: absolute;
+    margin: 0;
+    top: 100px;
+}
+.name {
+    padding-left: 30px;
+}
+.namef, .namel {
+    color: #1477C8;
+    margin-top: 3em;
+    margin-right: 10px;
+    padding-top: 10px;
+    border-radius: 5em;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 10px;
+    font-family:'Roboto', sans-serif ;
+    border: solid whitesmoke;
+    font-weight: bold;
+    box-shadow: 10px 10px 8px #d3d2d2;
+}
+
+.email, .password1, .password2 {
+    color: #1477C8;
+    width: 28.5em;
+    margin-top: 1.5em;
+    padding-top: 10px;
+    border-radius: 5em;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 10px;
+    font-family:'Roboto', sans-serif ;
+    border: solid whitesmoke;
+    font-weight: bold;
+    box-shadow: 10px 10px 8px #d3d2d2;
+}
+.text {
+    padding-left: 30px;
+}
+.type {
+    margin-top: 1em;
+    padding-left: 60px;
+}
+.male, .female {
+    position: absolute;
+    width: 80px;
+    font-family:'Roboto', sans-serif ;
+    margin-top: 0em;
+    margin-right: 10px;
+    padding-top: 10px;
+    border-radius: 5em;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 10px;
+    font-family:'Roboto', sans-serif ;
+    border: solid whitesmoke;
+    font-weight: bold;
+    box-shadow: 10px 10px 8px #d3d2d2;
+}
+.male {
+    left: 145px;
+}
+.female {
+    right: 27px;
+}
+#gender {
+    bottom: -30px;
+    position: absolute;
+    font-family: 'Roboto', sans-serif;
+}
+#male1, #female1 {
+    cursor: pointer;
+}
+.birth {
+    position: absolute;
+    width: 17.5em;
+    margin-top: 1.5em;
+    padding-top: 10px;
+    border-radius: 5em;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 10px;
+    font-family:'Roboto', sans-serif ;
+    border: solid whitesmoke;
+    font-weight: bold;
+    box-shadow: 10px 10px 8px #d3d2d2;
+    left: 170px;
+    bottom: -105px;
+}
+#age {
+    bottom: -90px;
+    position: absolute;
+    font-family: 'Roboto', sans-serif;
+    left: 60px;
+}
+.signUp1 {
+    position: absolute;
+    bottom: -170px;
+    left: 160px;
+    font-family: 'Lobster', sans-serif;
+    font-weight: bold;
+    font-size: 1em;
+    border-radius:2em;
+    padding-left: 4em;
+    padding-right: 4em;
+    padding-top: .8em;
+    padding-bottom: .8em;
+    color: white;
+    background: linear-gradient(to bottom, rgb(18, 223, 230), rgb(8, 129, 177));
+    border: whitesmoke;
+    box-shadow: 10px 10px 8px #d3d2d2 ;
+}
+.signUp1:hover {
+    background: linear-gradient(to bottom, #1477C8, #09D0E3);
+}
+#log {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+.namef:focus, .namel:focus, .email:focus, .password1:focus, .password2:focus {
+    outline: 2px solid #1477C8;
+}
+.in{
+    text-decoration: none;
+    color:rgb(13, 173, 236) ;
+}
+.log {
+    font-weight: bold;
+    position: absolute;
+    bottom: -71%;
+    left: 28%;
+
+}

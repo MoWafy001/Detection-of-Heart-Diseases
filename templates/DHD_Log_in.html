@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DHD</title>
+  <link rel="stylesheet" href="/static/css/Log_in.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&display=swap" rel="stylesheet">
+  {% if msg %}
+  <script>
+    alert("{{msg}}")
+    document.location.replace("/signin")
+  </script>
+  {% endif %}
+</head>
+
+<body style="background-image: url('/static/img/background.jpg');">
+
+  <section class="all">
+    <div id="img"></div>
+    <img src="/static/img/Logo.png" alt="user">
+    <div class="hero">
+      <h2 class="log">Log <span>in</span></h2>
+    </div>
+
+
+
+
+    <form action="/signin" method="POST" class="input">
+      <input required name="email" type="text" placeholder="Email address" class="fir_block">
+      <br>
+      <input required name="password" type="password" placeholder="Password" class="sec_block">
+
+
+
+      <section class="down">
+        <div class="right">
+          <div class="re">
+            <input type="checkbox" id="radio" class="radioo">
+            <label for="radio" class="local">Remember me</label>
+
+          </div>
+
+          <a href="#" class="inside">Forgot password?</a>
+
+        </div>
+      </section>
+
+      <section class="submission">
+        <div class="container">
+          <input type="submit" class="LastOne" value="Log in">
+        </div>
+
+        <div class="sign">
+          Do not have an account? <a href="/signup" class="up">Sign up</a>
+
+        </div>
+
+
+      </section>
+    </form>
+  </section>
+
+</body>
+
+</html>
