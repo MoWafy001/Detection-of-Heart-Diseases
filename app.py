@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from os import abort, error
-from models import db, User, app
+from models import db, Patient, app
 from flask import request, redirect, url_for, render_template, session, abort
 import datetime
 import os
@@ -11,12 +11,12 @@ import jwt
 
 app.secret_key = b'#ZRfeuPY^+f]1P|'
 
-sender_mail = os.getenv('MAIL_USERNAME')
+sender_mail = os.getenv('MAIL_patientNAME')
 forgot_password_secret = os.getenv('forgot_password_secret')
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = sender_mail
+app.config['MAIL_patientNAME'] = sender_mail
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
@@ -30,11 +30,11 @@ def email():
     if email is None:
         abort(400)
 
-    user = User.query.filter(User.email == email).first()
-    if user is None:
+    patient = Patient.query.filter(Patient.email == email).first()
+    if patient is None:
         abort(404)
 
-    encoded_jwt = jwt.encode({"user_id": user.id},
+    encoded_jwt = jwt.encode({"patient_id": patient.id},
                              forgot_password_secret, algorithm="HS256")
 
     print(encoded_jwt, request.host_url, request.host)
@@ -42,7 +42,7 @@ def email():
     msg = Message('Reset password',
                   sender=sender_mail, recipients=[email])
     msg.body = f"""
-        Hey {user.first_name},
+        Hey {patient.first_name},
         Here is a link to reset your password
 
         {request.host_url}resetpassword/{encoded_jwt}
@@ -58,26 +58,26 @@ def resetPassword(token):
     newPassword = request.args.get('new-password')
 
     try:
-        user_id = jwt.decode(token, forgot_password_secret,
-                             algorithms=["HS256"])['user_id']
-        print(user_id)
+        patient_id = jwt.decode(token, forgot_password_secret,
+                             algorithms=["HS256"])['patient_id']
+        print(patient_id)
     except Exception as e:
         print(str(e))
         return "invalid link"
 
     try:
-        user = User.query.get(user_id)
-        if user is None:
+        patient = Patient.query.get(patient_id)
+        if patient is None:
             raise "error"
     except Exception as e:
         print(str(e))
-        return "could find the user"
+        return "could find the patient"
 
     if newPassword is None:
         return render_template("Forgot_password.html")
 
     try:
-        user.password = newPassword
+        patient.password = newPassword
         db.session.commit()
     except Exception as e:
         print(str(e))
@@ -116,7 +116,7 @@ def signup():
         gender = gender == "Male"
 
         try:
-            db.session.add(User(
+            db.session.add(Patient(
                 email=email,
                 password=password,
                 first_name=first_name,
@@ -147,14 +147,14 @@ def signin():
         if None in [email, password]:
             return redirect(url_for('signin', msg="fields missing"))
 
-        user = User.query.filter(
-            User.email == email, User.password == password).first()
+        patient = Patient.query.filter(
+            Patient.email == email, Patient.password == password).first()
 
-        if user is None:
+        if patient is None:
             return redirect(url_for('signin', msg="Invalid credentials"))
 
-        session['user_id'] = user.id
-        session['user_email'] = user.email
+        session['patient_id'] = patient.id
+        session['patient_email'] = patient.email
 
         return redirect(url_for('signin', msg="Login was successful!"))
 
