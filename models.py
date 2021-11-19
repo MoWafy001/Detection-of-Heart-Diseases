@@ -26,7 +26,22 @@ class Patient(db.Model):
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
     doctor = db.relationship("Doctor", back_populates="patients")
 
-    status = db.Column(db.Integer)
+    status = db.Column(db.Boolean)
+    degree = db.Column(db.Float) 
+
+    # features
+
+    cp = db.Column(db.Integer) # 1: typical angina, 2: atypical angina, 3: non-anginal pain, 4: asymptomatic
+    trestbps = db.Column(db.Integer)
+    chol = db.Column(db.Integer)
+    fbs = db.Column(db.Boolean)
+    restecg = db.Column(db.Integer) # 0 = normal, 1 = having ST-T wave abnormality, 2 = showing probable or definite left ventricular hypertrophy by Estes' criteria
+    thalach = db.Column(db.Integer)
+    exang = db.Column(db.Boolean)
+    oldpeak = db.Column(db.Integer)
+    slope = db.Column(db.Integer)
+    ca = db.Column(db.Integer)
+    thal = db.Column(db.Integer)
 
     def __str__(self) -> str:
         return f"Patient: email:{self.email}"

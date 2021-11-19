@@ -11,12 +11,12 @@ import jwt
 
 app.secret_key = b'#ZRfeuPY^+f]1P|'
 
-sender_mail = os.getenv('MAIL_patientNAME')
+sender_mail = os.getenv('MAIL_USERNAME')
 forgot_password_secret = os.getenv('forgot_password_secret')
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_patientNAME'] = sender_mail
+app.config['MAIL_USERNAME'] = sender_mail
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
