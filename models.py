@@ -1,7 +1,10 @@
 from enum import unique
+from re import I
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask("heart")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('SQLALCHEMY_DATABASE_URI')
@@ -27,15 +30,17 @@ class Patient(db.Model):
     doctor = db.relationship("Doctor", back_populates="patients")
 
     status = db.Column(db.Boolean)
-    degree = db.Column(db.Float) 
+    degree = db.Column(db.Float)
 
     # features
 
-    cp = db.Column(db.Integer) # 1: typical angina, 2: atypical angina, 3: non-anginal pain, 4: asymptomatic
+    # 1: typical angina, 2: atypical angina, 3: non-anginal pain, 4: asymptomatic
+    cp = db.Column(db.Integer)
     trestbps = db.Column(db.Integer)
     chol = db.Column(db.Integer)
     fbs = db.Column(db.Boolean)
-    restecg = db.Column(db.Integer) # 0 = normal, 1 = having ST-T wave abnormality, 2 = showing probable or definite left ventricular hypertrophy by Estes' criteria
+    # 0 = normal, 1 = having ST-T wave abnormality, 2 = showing probable or definite left ventricular hypertrophy by Estes' criteria
+    restecg = db.Column(db.Integer)
     thalach = db.Column(db.Integer)
     exang = db.Column(db.Boolean)
     oldpeak = db.Column(db.Integer)
@@ -43,11 +48,54 @@ class Patient(db.Model):
     ca = db.Column(db.Integer)
     thal = db.Column(db.Integer)
 
+    def map_cp(v):
+        if v == 'typical angina':
+            return 1
+        if v == 'atypical angina':
+            return 2
+        if v == 'non-anginal pain':
+            return 3
+        if v == 'asymptotic':
+            return 4
+
+    def map_restecg(v):
+        if v == 'normal':
+            return 0
+        if v == 'having ST-T wave abnormality':
+            return 1
+        if v == 'left ventricular hyperthrophy':
+            return 2
+
+    def map_restecg(v):
+        if v == 'normal':
+            return 0
+        if v == 'having ST-T wave abnormality':
+            return 1
+        if v == 'left ventricular hyperthrophy':
+            return 2
+
+    def map_slope(v):
+        if v == 'upsloping':
+            return 1
+        if v == 'flat':
+            return 2
+        if v == 'downsloping':
+            return 3
+
+    def map_thal(v):
+        if v == 'normal':
+            return 3
+        if v == 'fixed defect':
+            return 6
+        if v == 'reversable defect':
+            return 7
+
     def __str__(self) -> str:
         return f"Patient: email:{self.email}"
 
     def __repr__(self) -> str:
         return f"Patient: email:{self.email}"
+
 
 class Doctor(db.Model):
     __tablename__ = 'doctors'
@@ -72,16 +120,18 @@ class Doctor(db.Model):
     def __repr__(self) -> str:
         return f"Doctor: email:{self.email}"
 
+
 class Meeting(db.Model):
     __tablename__ = "meetings"
 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, nullable=False)
-    
+
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
     doctor = db.relationship("Doctor", back_populates="meetings")
 
     patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'))
     patient = db.relationship("Patient", uselist=False, backref="meeting")
+
 
 db.create_all()

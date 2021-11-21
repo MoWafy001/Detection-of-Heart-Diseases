@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DHD</title>
+  <link rel="stylesheet" href="/static/css/Analyse.css">
+  {% if first_name %}
+  <script>
+    alert("Welcome {{first_name}}!")
+  </script>
+  {% endif %}
+
+</head>
+
+<body style="background-image: url('/static/img/background.jpg');" class="all">
+  <form method="POST" class="All">
+    <div id="img"></div>
+    <img id="IM" src="/static/img/Logo.png" alt="user">
+    <h1 class="head">Welcome to DHD website</h1>
+
+    <h3 class="sec-head">Please fill in the required information</h3>
+    <ol type="1" class="list">
+      <li class="title">1- Chest-pain type :</li>
+      <ul class="fir-container">
+
+        <li class="typical">
+          <input required id="t" type="radio" name="chest-pain" value="typical angina">
+          <label for="t">typical angina</label>
+        </li>
+        <li class="non">
+          <input required id="n" type="radio" name="chest-pain" value="non-anginal pain">
+          <label for="n">non-anginal pain</label>
+        </li>
+
+
+
+        <li class="atypical">
+          <input required id="a" type="radio" name="chest-pain" value="atypical angina">
+          <label for="a">atypical angina</label>
+        </li>
+        <li class="asymptotic">
+          <input required id="as" type="radio" name="chest-pain" value="asymptotic">
+          <label for="as">asymptotic</label>
+        </li>
+
+      </ul>
+
+
+      <li class="title">2- Resting Blood Pressure :</li>
+
+      <ul class="BLOOD">
+        <p class="blood"> <input required type="text" id="Resting Blood Pressure" name="Resting Blood Pressure"
+            placeholder="_______" class="Blood"> mmHg</p>
+      </ul>
+
+
+
+
+      <li class="third-list title">3- Serum Cholesterol :</li>
+
+      <ul class="SERUM">
+        <p class="serum"><input required type="text" id="Serum Cholesterol" name="Serum Cholesterol"
+            placeholder="_______" class="Serum"> mg/dl </p>
+      </ul>
+
+
+
+      <li class="fourth-list title">4- Fasting Blood Sugar :</li>
+      <ul class="sos">
+        <li class="FASTING">
+          <input required id="smol" type="radio" name="Fasting Blood Sugar" value="off">
+          <label for="smol">Fasting Blood Sugar <= 120 mg/dl</label>
+        </li>
+        <li class="FASTING-sec">
+          <input required id="larg" type="radio" name="Fasting Blood Sugar" value="on">
+          <label for="larg">Fasting Blood Sugar > 120 mg/dl</label>
+        </li>
+      </ul>
+
+
+      <li class="RESTING title">5- Resting ECG :</li>
+      <ul class="SOS">
+        <li class="Resting">
+          <input required id="nor" type="radio" name="Resting" value="normal">
+          <label for="nor">normal</label>
+        </li>
+        <li class="resting">
+          <input required id="hav" type="radio" name="Resting" value="having ST-T wave abnormality">
+          <label for="hav">having ST-T wave abnormality </label>
+        </li>
+        <li class="REsting">
+          <input required id="lef" type="radio" name="Resting" value="left ventricular hyperthrophy">
+          <label for="lef">left ventricular hyperthrophy </label>
+        </li>
+      </ul>
+
+
+      <li class="max title">6- Max heart rate achieved :</li>
+      <ul>
+        <input required type="text" id="heart rate" name="heart rate" class="Max" placeholder="_________________">
+      </ul>
+
+
+      <li class="seven title">7- Exercise induced angina :</li>
+      <ul class="SoS">
+        <li class="yes">
+          <input required id="yes" type="radio" name="Exercise" value="on">
+          <label for="yes">Yes</label>
+        </li>
+        <li class="no">
+          <input required id="no" type="radio" name="Exercise" value="off">
+          <label for="no">No</label>
+        </li>
+      </ul>
+
+
+      <li class="eight title">8- ST depression induced by exercise relative to rest :</li>
+      <ul>
+        <input required type="text" id="depression" name="depression" class="dep" placeholder="_________________">
+      </ul>
+
+
+      <li class="nine title">9- peak exercise ST segmet :</li>
+      <ul>
+        <li class="Up">
+          <input value="upsloping" required id="ups" type="radio" name="peak" class="up">
+          <label for="ups">upsloping</label>
+        </li>
+        <li class="Flat">
+          <input value="flat" required id="fl" type="radio" name="peak" class="flat">
+          <label for="fl">flat</label>
+        </li>
+        <li class="Down">
+          <input value="downsloping" required id="dm" type="radio" name="peak" class="down">
+          <label for="dm">downsloping</label>
+        </li>
+      </ul>
+
+      <li class="ten title">10- Number of major vessels (0-3) colored by flourosopy :</li>
+      <ul>
+        <input required type="text" name="major" class="Ten" placeholder="_________________">
+      </ul>
+
+
+      <li class="eleven title">11- thal :</li>
+      <ul class="SOs">
+        <li class="nor">
+          <input value="normal" required id="nor1" type="radio" name="thal">
+          <label for="nor1">normal</label>
+        </li>
+        <li class="fixed">
+          <input value="fixed defect" required id="fi" type="radio" name="thal">
+          <label for="fi">fixed defect</label>
+        </li>
+        <li class="defect">
+          <input value="reversable defect" required id="rev" type="radio" name="thal">
+          <label for="rev">reversable defect</label>
+        </li>
+      </ul>
+
+
+
+    </ol>
+    <button type="submit" class="button">Analyse</button>
+    <script>
+      document.querySelector('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const form = document.querySelector('form')
+        const formData = new FormData(form)
+        const plainFormData = Object.fromEntries(formData.entries());
+        const formDataJsonString = JSON.stringify(plainFormData);
+
+        const response = await fetch('/analyse', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: formDataJsonString,
+        })
+
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          throw new Error(errorMessage);
+        }
+
+        result = await response.json();
+        console.log(result);
+
+        if(result.degree === null){
+          document.getElementById('degree-field').style.display = 'none';
+          document.getElementById('videobutton').style.display = 'none';
+        }
+        else{
+          document.getElementById('degree-field').style.display = 'block';
+          document.getElementById('videobutton').style.display = 'block';
+        }
+
+        document.getElementById('status').textContent = result.status? "There is a risk": "You are probably ok"
+        document.getElementById('status').style.color = result.status? "red": "green"
+
+        document.getElementById('degree').textContent = result.degree
+
+        document.getElementById('popup').style.display = 'block'
+
+
+
+      })
+    </script>
+  </form>
+  <div id="popup" style="display: none ;position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff5;">
+    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #09D0E3ee; padding: 1em; border-radius: 10px; font-family: Arial, Helvetica, sans-serif;">
+      <h2 style="margin: 1em; text-align: center;">Result</h2>
+      <div style="text-align: center;">
+        <span style="display: block;">status: <span id="status"></span></span>
+        <span id="degree-field" style="display: block;">degree: <span id="degree" style="color: red;"></span></span>
+      </div>
+      <span id="videobutton" style="padding: 10px 20px;display: block; text-align: center; color: #09D0E3; background: #fff; margin: 1em 0.5em; cursor: pointer;">start a videocall</span>
+      <span onclick="document.getElementById('popup').style.display = 'none';" style="padding: 10px 20px;display: block; text-align: center; border: 1px solid #000; margin: 1em 0.5em; cursor: pointer;">close</span>
+    </div>
+  </div>
+</body>
+
+</html>

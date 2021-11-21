@@ -1,13 +1,11 @@
-from dotenv import load_dotenv
-load_dotenv()
-
-from os import abort, error
-from models import db, Patient, app
-from flask import request, redirect, url_for, render_template, session, abort
-import datetime
-import os
-from flask_mail import Mail, Message
 import jwt
+from flask_mail import Mail, Message
+import os
+import datetime
+from flask import request, redirect, url_for, render_template, session, abort, jsonify, Response
+from models import db, Patient, app
+from prediction import predict_disease, predict_percentage
+
 
 app.secret_key = b'#ZRfeuPY^+f]1P|'
 
@@ -59,7 +57,7 @@ def resetPassword(token):
 
     try:
         patient_id = jwt.decode(token, forgot_password_secret,
-                             algorithms=["HS256"])['patient_id']
+                                algorithms=["HS256"])['patient_id']
         print(patient_id)
     except Exception as e:
         print(str(e))
@@ -155,8 +153,87 @@ def signin():
 
         session['patient_id'] = patient.id
         session['patient_email'] = patient.email
+        session['patient_first_name'] = patient.first_name
 
-        return redirect(url_for('signin', msg="Login was successful!"))
+        return redirect(url_for('analyse'))
+
+
+@app.route('/analyse', methods=['GET', 'POST'])
+def analyse():
+    if 'patient_id' not in session.keys() or not session['patient_id']:
+        return redirect("/signin")
+
+    if request.method == 'GET':
+        return render_template("Analyse.html")
+
+    # if POST
+    print(request.json)
+    try:
+        cp = request.json.get('chest-pain')
+        cp = Patient.map_cp(cp)
+        trestbps = int(request.json.get('Resting Blood Pressure'))
+        chol = int(request.json.get('Serum Cholesterol'))
+        fbs = request.json.get('Fasting Blood Sugar') == 'on'
+        restecg = request.json.get('Resting')
+        restecg = Patient.map_restecg(restecg)
+        thalach = int(request.json.get('heart rate'))
+        exang = request.json.get('Exercise') == "on"
+        oldpeak = int(request.json.get('depression'))
+        slope = request.json.get('peak')
+        slope = Patient.map_slope(slope)
+        ca = int(request.json.get('major'))
+        thal = request.json.get('thal')
+        thal = Patient.map_thal(thal)
+
+        if None in [cp, trestbps, chol, fbs, restecg,
+                    thalach, exang, oldpeak, slope,
+                    ca, thal]:
+            raise Exception('error')
+
+        print([cp, trestbps, chol, fbs, restecg,
+               thalach, exang, oldpeak, slope,
+               ca, thal])
+    except Exception as e:
+        print(str(e))
+        abort(Response('invalid fields', 400))
+
+    try:
+
+        patient = Patient.query.get(session['patient_id'])
+
+        data = [patient.age, patient.gender, cp, trestbps, chol, fbs,
+                restecg, thalach, exang, oldpeak, slope, ca, thal]
+
+        has_disease = predict_disease(data)
+        degree = None
+
+        if has_disease:
+            degree = predict_percentage(data)
+
+        patient.cp = cp
+        patient.trestbps = trestbps
+        patient.chol = chol
+        patient.fbs = fbs
+        patient.restecg = restecg
+        patient.thalach = thalach
+        patient.exang = exang
+        patient.oldpeak = oldpeak
+        patient.slope = slope
+        patient.ca = ca
+        patient.thal = thal
+
+        patient.status = has_disease
+        patient.degree = degree
+
+        db.session.commit()
+    except Exception as e:
+        print(str(e))
+        abort(Response("some error happened", 500))
+
+    return jsonify({
+        "status": bool(has_disease),
+        "degree": degree
+    })
 
 
 if __name__ == "__main__":
