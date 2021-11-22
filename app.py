@@ -328,7 +328,7 @@ def remove_from_waiting():
 def handel_join(peer_id):
     print(request.headers['Referer'])
     join_room(request.headers['Referer'])
-    emit("user-joined", peer_id, broadcast=True, include_self=False)
+    emit("user-joined", peer_id, broadcast=True, include_self=False, room=request.headers['Referer'])
 
 
 if __name__ == "__main__":
