@@ -4,6 +4,8 @@ blinker==1.4
 certifi==2021.10.8
 charset-normalizer==2.0.7
 click==8.0.3
+dnspython==1.16.0
+eventlet==0.30.2
 Flask==2.0.2
 Flask-Mail==0.9.1
 Flask-SocketIO==5.1.1
@@ -28,6 +30,7 @@ requests==2.26.0
 scikit-learn==1.0.1
 scipy==1.7.2
 simple-websocket==0.4.0
+six==1.16.0
 sklearn==0.0
 SQLAlchemy==1.4.27
 threadpoolctl==3.0.0

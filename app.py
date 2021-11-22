@@ -21,7 +21,7 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['SECRET_KEY'] = '%^qe123ASDasd881_asd!'
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 mail = Mail(app)
 
@@ -328,9 +328,9 @@ def remove_from_waiting():
 def handel_join(peer_id):
     print(request.headers['Referer'])
     join_room(request.headers['Referer'])
-    emit("user-joined", peer_id, broadcast=True, include_self=False, room=request.headers['Referer'])
+    emit("user-joined", peer_id, broadcast=True, include_self=False)
 
 
 if __name__ == "__main__":
     # app.run(debug=True, port=os.getenv("PORT", 5000))
-    socketio.run(app, debug=True, port=os.getenv("PORT", 5000))
+    socketio.run(app, debug=False, port=int(os.environ.get('PORT', '5000')))
