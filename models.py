@@ -57,6 +57,16 @@ class Patient(db.Model):
             return 3
         if v == 'asymptotic':
             return 4
+    
+    def reverse_map_cp(v):
+        if v == 1:
+            return 'typical angina'
+        if v == 2:
+            return 'atypical angina'
+        if v == 3:
+            return 'non-anginal pain'
+        if v == 4:
+            return 'asymptotic'
 
     def map_restecg(v):
         if v == 'normal':
@@ -66,13 +76,13 @@ class Patient(db.Model):
         if v == 'left ventricular hyperthrophy':
             return 2
 
-    def map_restecg(v):
-        if v == 'normal':
-            return 0
-        if v == 'having ST-T wave abnormality':
-            return 1
-        if v == 'left ventricular hyperthrophy':
-            return 2
+    def reverse_map_restecg(v):
+        if v == 0:
+            return 'normal'
+        if v == 1:
+            return 'having ST-T wave abnormality'
+        if v == 2:
+            return 'left ventricular hyperthrophy'
 
     def map_slope(v):
         if v == 'upsloping':
@@ -82,6 +92,14 @@ class Patient(db.Model):
         if v == 'downsloping':
             return 3
 
+    def reverse_map_slope(v):
+        if v == 1:
+            return 'upsloping'
+        if v == 2:
+            return 'flat'
+        if v == 3:
+            return 'downsloping'
+
     def map_thal(v):
         if v == 'normal':
             return 3
@@ -89,6 +107,14 @@ class Patient(db.Model):
             return 6
         if v == 'reversable defect':
             return 7
+
+    def reverse_map_thal(v):
+        if v == 3:
+            return 'normal'
+        if v == 6:
+            return 'fixed defect'
+        if v == 7:
+            return 'reversable defect'
 
     def __str__(self) -> str:
         return f"Patient: email:{self.email}"

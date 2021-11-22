@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHD</title>
+    <link rel="stylesheet" href="/static/css/Vedio.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+        integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    <script type="text/javascript" charset="utf-8" defer>
+        var socket = io();
+        socket.on('connect', () => {
+            var peer = new Peer()
+            //console.log(peer);
+            peer.on('open', () => {
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                    .then(stream => {
+                        //console.log('something');
+                        stream.getAudioTracks()[0].enabled = false
+
+                        {% if patient_id %}
+                        socket.emit('waiting', {{ patient_id }}, socket.id);
+                        {% endif %}
+
+                        socket.emit('join', peer.id)
+
+                        socket.on("user-joined", (peer_id) => {
+                            console.log(peer_id, peer.id);
+                            if (peer_id != peer.id){
+                                peer.connect(peer_id)
+                            }
+                        })
+
+                        peer.on('connection', (data) => {
+                            console.log(data);
+                            console.log("connection happened");
+                            console.log(data.peer, stream);
+                            const call = peer.call(data.peer, stream)
+                            console.log(call);
+                            call.on('stream', function (remoteStream) {
+                                console.log(remoteStream);
+                                const video = document.getElementById('vid')
+                                video.srcObject = remoteStream
+                                video.onloadedmetadata = function(e) {
+                                    video.play()
+                                };
+                            });
+                        })
+
+                        peer.on('call', call => {
+                            call.answer(stream); // Answer the call with an A/V stream.
+                            call.on('stream', function (remoteStream) {
+                                console.log(remoteStream);
+                                const video = document.getElementById('vid')
+                                video.srcObject = remoteStream
+                                video.onloadedmetadata = function(e) {
+                                    video.play()
+                                };
+                            });
+                        })
+            })
+        })
+        })
+
+    </script>
+</head>
+
+<body style="background-image: url('/static/img/background.jpg');">
+    <a href="#" id="O"><img class="home" src="/static/img/icon.png">
+        <div id="H">Home</div>
+    </a>
+
+    <img src="/static/img/Logo.png" class="Logo">
+    <div id="middle">
+        <video id='vid' style="width: 100%;height: 100%;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%) scaleX(-1);"></video>
+        <div id="outer">
+            <div class="inner"><button id="button_style" type="button" class="msgBtn" onClick="return false;"><img
+                        id="img1" src="/static/img/microphone.png" /></button></div>
+            <div class="inner"><button id="button_style" type="button" class="msgBtn red" onClick="return false;"><img
+                        id="img2" src="/static/img/phone.png" /></button></div>
+            <div class="inner"><button id="button_style" type="button" class="msgBtn" onClick="return false;"><img
+                        id="img3" src="/static/img/vi.png" /></button></div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

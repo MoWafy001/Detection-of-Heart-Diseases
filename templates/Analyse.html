@@ -218,7 +218,7 @@
         <span style="display: block;">status: <span id="status"></span></span>
         <span id="degree-field" style="display: block;">degree: <span id="degree" style="color: red;"></span></span>
       </div>
-      <span id="videobutton" style="padding: 10px 20px;display: block; text-align: center; color: #09D0E3; background: #fff; margin: 1em 0.5em; cursor: pointer;">start a videocall</span>
+      <span onclick="document.location = '/video/'+{{patient_id}};" id="videobutton" style="padding: 10px 20px;display: block; text-align: center; color: #09D0E3; background: #fff; margin: 1em 0.5em; cursor: pointer;">start a videocall</span>
       <span onclick="document.getElementById('popup').style.display = 'none';" style="padding: 10px 20px;display: block; text-align: center; border: 1px solid #000; margin: 1em 0.5em; cursor: pointer;">close</span>
     </div>
   </div>

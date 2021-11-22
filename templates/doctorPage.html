@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHD</title>
+    <link rel="stylesheet" href="/static/css/doctorPage.css">
+</head>
+
+<body style="background-image: url('/static/img/background.jpg');">
+
+    <a href="#" id="O"><img class="home" src="/static/img/icon.png">
+        <div id="H">Home</div>
+    </a>
+    <a href="#" id="D"><img class="home" src="/static/img/edit.png">
+        <div id="E">Edit</div>
+    </a>
+    <a href="/video/{{patient_id}}" id="I"><img class="home" src="/static/img/video.png">
+        <div id="V">Video Conversation</div>
+    </a>
+    <a href="#" id="P">
+        <div id="U">Upload CSV</div>
+    </a>
+    <img src="/static/img/Logo.png" class="Logo">
+
+    <form class="container">
+        <h2>Results of analysis</h2>
+
+        <table>
+            <tbody>
+                <tr>
+                    <th class="s">1- Patient name :</th>
+                    <th>
+                        <input type="text" placeholder="___________________________________"
+                            value="{{patient_first_name + ' ' + patient_last_name}}">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">2- Age :</th>
+                    <th>
+                        <input value="{{patient_age}}" type="text" class="l" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">3- Sex :</th>
+                    <th>
+                        <input value="{{patient_sex}}" type="text" class="l" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">4- Chest-pain type :</th>
+                    <th>
+                        <input value="{{patient_cp}}" type="text" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">5- Resting Blood Pressure :</th>
+                    <th>
+                        <input value="{{patient_trestbps}}" type="text" class="l" placeholder="___________________________________">
+                        <h4>mmHg</h4>
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">6- Serum Cholestrol :</th>
+                    <th>
+                        <input value="{{patient_chol}}" type="text" class="l" placeholder="___________________________________">
+                        <h4 id="mg">mg/dl</h4>
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">7- Fasting Blood Sugar :</th>
+                    <th>
+                        <input value="{{patient_fbs}}" type="text" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">8- Resting ECG :</th>
+                    <th>
+                        <input value="{{patient_restecg}}" type="text" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">9- Max heart rate achieved :</th>
+                    <th>
+                        <input value="{{patient_thalach}}" type="text" class="l" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">10- Exercise induced angina :</th>
+                    <th>
+                        <input value="{{patient_exang}}" type="text" class="l" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">11- ST depression induced by exercise relative to rest :</th>
+                    <th>
+                        <input value="{{patient_oldpeak}}" type="text" class="l" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">12- Peak exercise ST segment :</th>
+                    <th>
+                        <input value="{{patient_thalach}}" type="text" class="l" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">13- Number of major vessels (0-3) colored by flourosopy : </th>
+                    <th>
+                        <input value="{{patient_slope}}" type="text" class="l" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">14- Thal :</th>
+                    <th>
+                        <input value="{{patient_ca}}" type="text" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">15- Diagnosis of heart disease :</th>
+                    <th>
+                        <input value="{{patient_thal}}" type="text" class="1" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">16- Degree of injury :</th>
+                    <th>
+                        <input value="{{patient_thalach}}" type="text" class="1" placeholder="___________________________________">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="s">17- Last meeting date :</th>
+                    <th>
+                        <input value="" type="text" placeholder="___________________________________">
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    {%if not last%}
+    <a class="imag" href="/doctor/{{index+1}}"><img id="Sss" src="/static/img/next.png"></a>
+    {% endif %}
+    {% if index-1 >= 0%}
+    <a class="imag" href="/doctor/{{index-1}}"><img id="Ss" src="/static/img/next1.png"></a>
+    {% endif %}
+</body>
+
+</html>
