@@ -6,7 +6,7 @@ import datetime
 from flask import request, redirect, url_for, render_template, session, abort, jsonify, Response
 from models import Doctor, db, Patient, app, Meeting
 from prediction import predict_disease, predict_percentage
-from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask_socketio import SocketIO, emit, join_room, leave_room, rooms
 
 app.secret_key = b'#ZRfeuPY^+f]1P|'
 
@@ -342,7 +342,7 @@ def remove_from_waiting():
 def handel_join(peer_id):
     print(request.headers['Referer'])
     join_room(request.headers['Referer'])
-    emit("user-joined", peer_id, broadcast=True, include_self=False)
+    emit("user-joined", peer_id, broadcast=True, include_self=False, room=request.headers['Referer'])
 
 
 if __name__ == "__main__":
