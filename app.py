@@ -4,7 +4,7 @@ from flask_mail import Mail, Message
 import os
 import datetime
 from flask import request, redirect, url_for, render_template, session, abort, jsonify, Response
-from models import Doctor, db, Patient, app
+from models import Doctor, db, Patient, app, Meeting
 from prediction import predict_disease, predict_percentage
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
@@ -189,11 +189,13 @@ def doctor(index):
         return redirect("/signin")
 
     last = False
+    meeting = True
 
     waiting = list(set(waiting_list.values()))
 
     if len(waiting) == 0 or index+1 > len(waiting):
         nindex = index - len(waiting)
+        meeting = False
         try:
             patient = Patient.query.filter(
                 Patient.doctor_id == session['doctor_id'])
@@ -206,17 +208,20 @@ def doctor(index):
 
     else:
         last = index == len(waiting) + Patient.query.filter(
-            Patient.doctor_id == session['doctor_id']).count() -1
+            Patient.doctor_id == session['doctor_id']).count() - 1
         patient = Patient.query.get(waiting[index])
         print(patient)
 
     if patient is not None:
+        last_meeting = Meeting.query.filter(Meeting.patient == patient,
+                                            Meeting.doctor_id == session['doctor_id']).first()
         return render_template('doctorPage.html', patient_first_name=patient.first_name, patient_last_name=patient.last_name,
                                patient_age=patient.age, patient_cp=Patient.reverse_map_cp(patient.cp), patient_trestbps=patient.trestbps,
                                patient_chol=patient.chol, patient_fbs="Fasting Blood Sugar > 120 mg/dl" if patient.fbs else "Fasting Blood Sugar <= 120 mg/dl", patient_restecg=Patient.reverse_map_restecg(patient.restecg),
-                               patient_thalach=patient.thalach, patient_exang=patient.exang, patient_oldpeak=patient.oldpeak,
+                               patient_thalach=patient.thalach, patient_exang="Yes" if patient.exang else "No", patient_oldpeak=patient.oldpeak,
                                patient_slope=Patient.reverse_map_slope(patient.slope), patient_ca=patient.ca, patient_thal=Patient.reverse_map_thal(patient.thal),
-                               patient_sex="Male" if patient.gender else "Female", patient_id=patient.id, index=index, last=last)
+                               patient_sex="Male" if patient.gender else "Female", patient_id=patient.id, index=index, last=last,
+                               patient_status="there is a risk" if patient.status else "probably ok", patient_degree=patient.degree, last_meeting_date=last_meeting.date if last_meeting else None, is_meeting=meeting)
     else:
         return "No Cases"
 
@@ -307,6 +312,11 @@ def video(patient_id):
 
     if 'doctor_id' in session.keys():
         Patient.query.get(patient_id).doctor_id = session['doctor_id']
+        db.session.add(Meeting(
+            date=datetime.datetime.now(),
+            patient_id=patient_id,
+            doctor_id=session['doctor_id']
+        ))
         db.session.commit()
 
     if 'patient_id' in session.keys():
