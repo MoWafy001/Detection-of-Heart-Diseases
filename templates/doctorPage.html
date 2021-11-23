@@ -10,18 +10,8 @@
 </head>
 
 <body style="background-image: url('/static/img/background.jpg');">
-
-    <a href="#" id="O"><img class="home" src="/static/img/icon.png">
-        <div id="H">Home</div>
-    </a>
-    <a href="#" id="D"><img class="home" src="/static/img/edit.png">
-        <div id="E">Edit</div>
-    </a>
     <a href="/video/{{patient_id}}" {% if is_meeting %}style="background:#ff0"{% endif %} id="I"><img class="home" src="/static/img/video.png">
         <div id="V">Video Conversation</div>
-    </a>
-    <a href="#" id="P">
-        <div id="U">Upload CSV</div>
     </a>
     <img src="/static/img/Logo.png" class="Logo">
 
