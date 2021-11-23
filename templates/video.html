@@ -16,14 +16,57 @@
     <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
     <script type="text/javascript" charset="utf-8" defer>
         var socket = io();
+        var peer;
+        var this_call;
         socket.on('connect', () => {
-            var peer = new Peer()
+            peer = new Peer()
             //console.log(peer);
             peer.on('open', () => {
                 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                     .then(stream => {
                         //console.log('something');
                         stream.getAudioTracks()[0].enabled = false
+                        stream.getVideoTracks()[0].enabled = false
+
+                        if (stream.getAudioTracks()[0].enabled)
+                                document.getElementById('img1').style.filter = 'none';
+                            else
+                                document.getElementById('img1').style.filter = 'invert(1)';
+
+                        if (stream.getVideoTracks()[0].enabled)
+                                document.getElementById('img3').style.filter = 'none';
+                            else
+                                document.getElementById('img3').style.filter = 'invert(1)';
+
+                        document.getElementById('img1').addEventListener('click', ()=>{ // mic
+                            stream.getAudioTracks()[0].enabled = !stream.getAudioTracks()[0].enabled
+
+                            if (stream.getAudioTracks()[0].enabled)
+                                document.getElementById('img1').style.filter = 'none';
+                            else
+                                document.getElementById('img1').style.filter = 'invert(1)';
+                        })                        
+                        document.getElementById('img2').addEventListener('click', ()=>{ // end
+                            socket.disconnect()
+                            Object.entries(peer.connections).forEach(id => {
+                                console.log(id);
+                                if (id == undefined)
+                                    return
+                                
+                                id[1][0].close()
+                                id[1][0].close()
+                            });
+                            peer.disconnect()
+                            this_call.close()
+                        })
+                        document.getElementById('img3').addEventListener('click', ()=>{ // camera
+                            stream.getVideoTracks()[0].enabled = !stream.getVideoTracks()[0].enabled
+
+                            if (stream.getVideoTracks()[0].enabled)
+                                document.getElementById('img3').style.filter = 'none';
+                            else
+                                document.getElementById('img3').style.filter = 'invert(1)';
+                        })
 
                         {% if patient_id %}
                         socket.emit('waiting', {{ patient_id }}, socket.id);
@@ -34,17 +77,33 @@
                         socket.on("user-joined", (peer_id) => {
                             console.log(peer_id, peer.id);
                             if (peer_id != peer.id){
-                                peer.connect(peer_id)
+                                const conn = peer.connect(peer_id)
+                                conn.on('close', ()=>{
+                                    console.log('connection closed');
+                                    document.getElementById('vid').pause();
+                                    document.getElementById('vid').srcObject = null;
+                                    document.getElementById('msg').textContent = "connection closed"
+                                    document.getElementById('msg').style.display = 'block'
+                                })
                             }
                         })
 
                         peer.on('connection', (data) => {
                             console.log(data);
+                            data.on('close', ()=>{
+                                console.log('connection closed');
+                                document.getElementById('vid').pause();
+                                document.getElementById('vid').srcObject = null;
+                                document.getElementById('msg').textContent = "connection closed"
+                                document.getElementById('msg').style.display = 'block'
+                            })
                             console.log("connection happened");
                             console.log(data.peer, stream);
                             const call = peer.call(data.peer, stream)
+                            this_call = call;
                             console.log(call);
                             call.on('stream', function (remoteStream) {
+                                document.getElementById('msg').style.display = 'none'
                                 console.log(remoteStream);
                                 const video = document.getElementById('vid')
                                 video.srcObject = remoteStream
@@ -55,8 +114,10 @@
                         })
 
                         peer.on('call', call => {
+                            this_call = call;
                             call.answer(stream); // Answer the call with an A/V stream.
                             call.on('stream', function (remoteStream) {
+                                document.getElementById('msg').style.display = 'none'
                                 console.log(remoteStream);
                                 const video = document.getElementById('vid')
                                 video.srcObject = remoteStream
@@ -79,6 +140,7 @@
 
     <img src="/static/img/Logo.png" class="Logo">
     <div id="middle">
+        <h2 style="font-family: 'Courier New', Courier, monospace;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%); z-index: 999; color: aliceblue;" id="msg">awaiting connection...</h2>
         <video id='vid' style="width: 100%;height: 100%;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%) scaleX(-1);"></video>
         <div id="outer">
             <div class="inner"><button id="button_style" type="button" class="msgBtn" onClick="return false;"><img

@@ -305,6 +305,10 @@ def video(patient_id):
             or ('doctor_id' in session.keys() and session['doctor_id'])):
         return redirect('/signin')
 
+    if 'doctor_id' in session.keys():
+        Patient.query.get(patient_id).doctor_id = session['doctor_id']
+        db.session.commit()
+
     if 'patient_id' in session.keys():
         return render_template('video.html', patient_id=patient_id)
     else:
