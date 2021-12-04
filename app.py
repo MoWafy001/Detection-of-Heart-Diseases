@@ -347,4 +347,4 @@ def handel_join(peer_id):
 
 if __name__ == "__main__":
     # app.run(debug=True, port=os.getenv("PORT", 5000))
-    socketio.run(app, debug=False, port=int(os.environ.get('PORT', '5000')))
+    socketio.run(app, debug=os.environ.get('DEBUG')=="True", port=int(os.environ.get('PORT', '5000')))
