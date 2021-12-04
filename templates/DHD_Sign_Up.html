@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHD</title>
+    <link rel="stylesheet" href="/static/css/Sign_Up.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&display=swap" rel="stylesheet">
+    {% if error %}
+    <script>
+        alert("{{error}}")
+        document.location.replace("/signup")
+    </script>
+    {% endif %}
+</head>
+
+<body style="background-image: url(/static/img/background.jpg);">
+    <div id="animation"></div>
+    <form method="POST" class="container">
+        <div id="img"></div>
+        <img src="/static/img/Logo.png" alt="user">
+        <h2>Sign <span>Up</span></h2>
+        
+        <div class="box">
+            <div class="name">
+                <input class="namef" name="namef" required type="text" placeholder="First Name">
+                <input class="namel" name="namel" required type="text" placeholder="Last Name">
+            </div>
+            <div class="text">
+                <input class="email" name="email" required type="email" placeholder="Email">
+                <input class="password1" id="password" name="password" required type="password" placeholder="Password">
+                <input class="password2" id="confirm_password" required type="password" placeholder="Password Confirmation">
+            </div>
+            <div class="type">
+                <label id="gender">Gender:</label>
+                <div class="male">
+                    <input required id="male1" type="radio" value="Male" name="Type" />
+                    <label for="male1">Male</label>
+                </div>
+                <div class="female">
+                    <input required id="female1" type="radio" value="Female" name="Type">
+                    <label for="female1">Female</label>
+                </div>
+            </div>
+            <div class="date">
+                <label id="age">Date of birth:</label>
+                <input required name="birth" class="birth" type="date">
+            </div>
+            <div class="signUp">
+                <input type="submit" class="signUp1" value="Sign Up">
+            </div>
+            <div class="log">
+                Already have an account? <a href="/signin" class="in">Log in</a>
+            </div>
+            <script>
+                var password = document.getElementById("password")
+                    , confirm_password = document.getElementById("confirm_password");
+
+                function validatePassword() {
+                    if (password.value != confirm_password.value) {
+                        confirm_password.setCustomValidity("Passwords Don't Match");
+                    } else {
+                        confirm_password.setCustomValidity('');
+                    }
+                }
+
+                password.onchange = validatePassword;
+                confirm_password.onkeyup = validatePassword;
+            </script>
+        </div>
+    </form>
+    
+</body>
+
+</html>
