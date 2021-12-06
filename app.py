@@ -246,7 +246,7 @@ def analyse():
         restecg = Patient.map_restecg(restecg)
         thalach = int(request.json.get('heart rate'))
         exang = request.json.get('Exercise') == "on"
-        oldpeak = int(request.json.get('depression'))
+        oldpeak = int(float(request.json.get('depression')))
         slope = request.json.get('peak')
         slope = Patient.map_slope(slope)
         ca = int(request.json.get('major'))
