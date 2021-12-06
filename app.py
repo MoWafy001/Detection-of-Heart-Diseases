@@ -249,7 +249,7 @@ def analyse():
         oldpeak = int(float(request.json.get('depression')))
         slope = request.json.get('peak')
         slope = Patient.map_slope(slope)
-        ca = int(request.json.get('major'))
+        ca = int(float(request.json.get('major')))
         thal = request.json.get('thal')
         thal = Patient.map_thal(thal)
 
