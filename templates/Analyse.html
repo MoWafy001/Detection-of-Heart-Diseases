@@ -202,7 +202,7 @@
         document.getElementById('status').textContent = result.status? "There is a risk": "You are probably ok"
         document.getElementById('status').style.color = result.status? "red": "green"
 
-        d = {1:'not so bad', 2:'bad', 3:'very bad', 4:'dangerous'}
+        d = {1:'not too bad', 2:'bad', 3:'very bad', 4:'dangerous'}
 
         document.getElementById('degree').textContent = d[result.degree]
 
