@@ -283,6 +283,7 @@ def analyse():
 
         if has_disease:
             degree = predict_percentage(data)
+            print(degree)
 
         patient.cp = cp
         patient.trestbps = trestbps
