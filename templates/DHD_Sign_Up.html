@@ -68,7 +68,13 @@
                     }
                 }
 
-                password.onchange = validatePassword;
+                password.onchange = ()=>{
+                    if (password.value.length < 8) {
+                        password.setCustomValidity("Too short. At least 8 characters.");
+                    } else {
+                        password.setCustomValidity('');
+                    }
+                };
                 confirm_password.onkeyup = validatePassword;
             </script>
         </div>

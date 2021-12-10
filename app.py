@@ -100,19 +100,25 @@ def signup():
         error = request.args.get("error")
         return render_template("DHD_Sign_Up.html", error=error)
 
-    else:
+    else: # post
         print(request.form)
         try:
             email = request.form.get('email')
             password = request.form.get('password')
+            if len(password) < 8:
+                raise Exception("invalid password")
+
             first_name = request.form.get('namef')
             last_name = request.form.get('namel')
             age = datetime.datetime.now().year - \
                 int(request.form.get('birth').split("-")[0])
+            if age <= 0:
+                raise Exception("invalid age")
+
             gender = request.form.get('Type')
 
             if None in [email, password, first_name, last_name, age, gender]:
-                raise "error"
+                raise Exception("invalid input")
         except Exception as e:
             print(str(e))
             return redirect(url_for("signup", error="invalid input or fields missing"))
