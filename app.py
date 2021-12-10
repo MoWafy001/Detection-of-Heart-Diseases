@@ -100,26 +100,18 @@ def signup():
         error = request.args.get("error")
         return render_template("DHD_Sign_Up.html", error=error)
 
-<<<<<<< HEAD
     else: # post
-=======
-    else:
->>>>>>> 7b3f189f215da198e0a22d50b50fe0c352266a9a
         print(request.form)
         try:
             email = request.form.get('email')
             password = request.form.get('password')
-<<<<<<< HEAD
             if len(password) < 8:
                 raise Exception("invalid password")
 
-=======
->>>>>>> 7b3f189f215da198e0a22d50b50fe0c352266a9a
             first_name = request.form.get('namef')
             last_name = request.form.get('namel')
             age = datetime.datetime.now().year - \
                 int(request.form.get('birth').split("-")[0])
-<<<<<<< HEAD
             if age <= 0:
                 raise Exception("invalid age")
 
@@ -127,12 +119,6 @@ def signup():
 
             if None in [email, password, first_name, last_name, age, gender]:
                 raise Exception("invalid input")
-=======
-            gender = request.form.get('Type')
-
-            if None in [email, password, first_name, last_name, age, gender]:
-                raise "error"
->>>>>>> 7b3f189f215da198e0a22d50b50fe0c352266a9a
         except Exception as e:
             print(str(e))
             return redirect(url_for("signup", error="invalid input or fields missing"))
@@ -266,17 +252,10 @@ def analyse():
         restecg = Patient.map_restecg(restecg)
         thalach = int(request.json.get('heart rate'))
         exang = request.json.get('Exercise') == "on"
-<<<<<<< HEAD
         oldpeak = int(float(request.json.get('depression')))
         slope = request.json.get('peak')
         slope = Patient.map_slope(slope)
         ca = int(float(request.json.get('major')))
-=======
-        oldpeak = int(request.json.get('depression'))
-        slope = request.json.get('peak')
-        slope = Patient.map_slope(slope)
-        ca = int(request.json.get('major'))
->>>>>>> 7b3f189f215da198e0a22d50b50fe0c352266a9a
         thal = request.json.get('thal')
         thal = Patient.map_thal(thal)
 
