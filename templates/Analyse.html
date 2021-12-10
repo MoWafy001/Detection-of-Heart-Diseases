@@ -202,9 +202,13 @@
         document.getElementById('status').textContent = result.status? "There is a risk": "You are probably ok"
         document.getElementById('status').style.color = result.status? "red": "green"
 
+<<<<<<< HEAD
         d = {1:'not too bad', 2:'bad', 3:'very bad', 4:'dangerous'}
 
         document.getElementById('degree').textContent = d[result.degree]
+=======
+        document.getElementById('degree').textContent = result.degree
+>>>>>>> 7b3f189f215da198e0a22d50b50fe0c352266a9a
 
         document.getElementById('popup').style.display = 'block'
 
