@@ -21,7 +21,7 @@ If for some reason you want to run it
 pip install -r requirements.txt
 ```
 
-2. Create a `.env` files (I should have made a template but I didn't)
+2. Create a `.env` file (I should have made a template but I didn't)
 
 3. You will have to have these in your `.env` file
 - SQLALCHEMY_DATABASE_URI
