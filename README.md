@@ -27,7 +27,7 @@ pip install -r requirements.txt
 - SQLALCHEMY_DATABASE_URI
 - MAIL_USERNAME `I only tried it with a Gmail`
 - MAIL_PASSWORD
-- forgot_password_secret `a secret for creating a JWT token`
+- forgot_password_secret `a secret for creating JWT tokens`
 
 Only the first one is required for the app to work, the other 3 is for the forget-password email
 
